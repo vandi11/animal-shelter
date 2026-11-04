@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "angular.ng-template",
+    "editorconfig.editorconfig",
+    "bmewburn.vscode-intelephense-client",
+    "onecentlin.laravel-blade"
+  ]
+}
