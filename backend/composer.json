@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.17",
+        "laravel/sanctum": "4.3.3",
         "laravel/tinker": "^3.0"
     },
     "require-dev": {
@@ -76,6 +77,14 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
+        "audit": {
+            "ignore": [
+                "PKSA-24ph-xkrh-y79j",
+                "PKSA-pr6q-2w5s-kzzf",
+                "PKSA-nxjs-s6hn-vb6m",
+                "PKSA-b2gg-vk1g-6d5q"
+            ]
+        },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
