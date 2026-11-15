@@ -1,1 +1,60 @@
-<p>animal-list works!</p>
+<h1 class="h3 mb-3">Állatok</h1>
+
+<div class="row g-2 mb-4">
+  <div class="col-12 col-sm-6 col-md-4">
+    <select class="form-select" [ngModel]="gender()"
+            (ngModelChange)="gender.set($event); load()">
+      <option value="">Minden nem</option>
+      <option value="male">Hím</option>
+      <option value="female">Nőstény</option>
+      <option value="unknown">Ismeretlen</option>
+    </select>
+  </div>
+  <div class="col-12 col-sm-6 col-md-4">
+    <select class="form-select" [ngModel]="adopted()"
+            (ngModelChange)="adopted.set($event); load()">
+      <option value="false">Gazdát keres</option>
+      <option value="true">Már örökbe fogadták</option>
+      <option value="">Mind</option>
+    </select>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+  </div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else {
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+    @for (pet of pets(); track pet.id) {
+      <div class="col">
+        <div class="card h-100">
+          @if (api.photoUrl(pet); as photo) {
+            <img [src]="photo" class="card-img-top" [alt]="pet.name">
+          }
+          <div class="card-body">
+            <h2 class="h5 card-title">{{ pet.name }}</h2>
+            <p class="card-text text-muted mb-1">
+              {{ pet.species }} · {{ genderLabels[pet.gender] }}
+            </p>
+            @if (pet.color) {
+              <p class="card-text text-muted small mb-0">Szín: {{ pet.color }}</p>
+            }
+            @if (pet.adopted) {
+              <span class="badge text-bg-secondary mt-2">Örökbe fogadták</span>
+            }
+          </div>
+          <div class="card-footer bg-transparent border-0 pb-3">
+            <a class="btn btn-primary w-100" [routerLink]="['/animals', pet.id]">
+              Részletek
+            </a>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <p class="text-muted">Nincs a feltételeknek megfelelő állat.</p>
+    }
+  </div>
+}
