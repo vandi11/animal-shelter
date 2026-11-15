@@ -1,0 +1,653 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-11-05T10:40:00.000Z",
+  "__export_source": "animal-shelter-api",
+  "resources": [
+    {
+      "_id": "wrk_animal_shelter",
+      "parentId": null,
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "name": "Animal Shelter API",
+      "description": "Laravel Animal Shelter REST API",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_animal_shelter_base",
+      "parentId": "wrk_animal_shelter",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8000/api",
+        "token": "",
+        "pet_id": "1",
+        "adoption_request_id": "1",
+        "user_id": "1",
+        "email": "test@example.com",
+        "password": "Password!123"
+      },
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 0,
+      "_type": "environment"
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "wrk_animal_shelter",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "name": "Authentication",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -100,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_pets",
+      "parentId": "wrk_animal_shelter",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "name": "Pets",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -90,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_profile",
+      "parentId": "wrk_animal_shelter",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "name": "Profile",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -80,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_adoptions",
+      "parentId": "wrk_animal_shelter",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "name": "Adoption Requests",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -70,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_admin",
+      "parentId": "wrk_animal_shelter",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "name": "Admin Users",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -60,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_register",
+      "parentId": "fld_auth",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/register",
+      "name": "Register",
+      "description": "Creates a normal user. is_admin cannot be set here.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Test User\",\n  \"email\": \"new-user@example.com\",\n  \"password\": \"Password!123\",\n  \"password_confirmation\": \"Password!123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "_type": "request"
+    },
+    {
+      "_id": "req_login",
+      "parentId": "fld_auth",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/login",
+      "name": "Login",
+      "description": "Copy the returned token into the token environment variable.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"{{ _.email }}\",\n  \"password\": \"{{ _.password }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -90,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "_type": "request"
+    },
+    {
+      "_id": "req_logout",
+      "parentId": "fld_auth",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/logout",
+      "name": "Logout",
+      "description": "",
+      "method": "POST",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -80,
+      "_type": "request"
+    },
+    {
+      "_id": "req_me",
+      "parentId": "fld_auth",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/user",
+      "name": "Current User",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -70,
+      "_type": "request"
+    },
+    {
+      "_id": "req_pets_list",
+      "parentId": "fld_pets",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/pets",
+      "name": "List Pets",
+      "description": "Optional filters: ?species=dog&gender=female&adopted=false",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -100,
+      "_type": "request"
+    },
+    {
+      "_id": "req_pets_show",
+      "parentId": "fld_pets",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/pets/{{ _.pet_id }}",
+      "name": "Get Pet",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -90,
+      "_type": "request"
+    },
+    {
+      "_id": "req_pets_create",
+      "parentId": "fld_pets",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/pets",
+      "name": "Create Pet",
+      "description": "Admin token required.",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"species\": \"dog\",\n  \"name\": \"Buddy\",\n  \"gender\": \"male\",\n  \"birth_date\": \"2022-05-10\",\n  \"weight\": 12.50,\n  \"color\": \"brown\",\n  \"health_status\": \"healthy\",\n  \"sterilized\": true,\n  \"arrival_date\": \"2026-01-15\",\n  \"description\": \"Friendly and playful dog.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -80,
+      "_type": "request"
+    },
+    {
+      "_id": "req_pets_update",
+      "parentId": "fld_pets",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/pets/{{ _.pet_id }}",
+      "name": "Update Pet",
+      "description": "PUT replaces the supplied pet data. Admin token required.",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"species\": \"dog\",\n  \"name\": \"Buddy Updated\",\n  \"gender\": \"male\",\n  \"health_status\": \"healthy\",\n  \"sterilized\": true,\n  \"adopted\": false\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -70,
+      "_type": "request"
+    },
+    {
+      "_id": "req_pets_patch",
+      "parentId": "fld_pets",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/pets/{{ _.pet_id }}",
+      "name": "Patch Pet",
+      "description": "Admin token required.",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"health_status\": \"under observation\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -60,
+      "_type": "request"
+    },
+    {
+      "_id": "req_pets_delete",
+      "parentId": "fld_pets",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/pets/{{ _.pet_id }}",
+      "name": "Delete Pet",
+      "description": "Admin token required.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -50,
+      "_type": "request"
+    },
+    {
+      "_id": "req_profile_get",
+      "parentId": "fld_profile",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/profile",
+      "name": "Get My Profile",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -100,
+      "_type": "request"
+    },
+    {
+      "_id": "req_profile_create",
+      "parentId": "fld_profile",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/profile",
+      "name": "Create Profile",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"full_name\": \"Test User\",\n  \"phone\": \"+3612345678\",\n  \"address\": \"Budapest, Test utca 1.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -90,
+      "_type": "request"
+    },
+    {
+      "_id": "req_profile_put",
+      "parentId": "fld_profile",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/profile",
+      "name": "Replace Profile",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"full_name\": \"Test User Updated\",\n  \"phone\": \"+3612345679\",\n  \"address\": \"Budapest, New address 2.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -80,
+      "_type": "request"
+    },
+    {
+      "_id": "req_profile_patch",
+      "parentId": "fld_profile",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/profile",
+      "name": "Patch Profile",
+      "description": "",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"phone\": \"+3612345680\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -70,
+      "_type": "request"
+    },
+    {
+      "_id": "req_adoption_create",
+      "parentId": "fld_adoptions",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/adoption-requests",
+      "name": "Create Adoption Request",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"pet_id\": {{ _.pet_id }}\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -100,
+      "_type": "request"
+    },
+    {
+      "_id": "req_adoption_list",
+      "parentId": "fld_adoptions",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/adoption-requests",
+      "name": "List All Adoption Requests",
+      "description": "Admin token required.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -90,
+      "_type": "request"
+    },
+    {
+      "_id": "req_adoption_mine",
+      "parentId": "fld_adoptions",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/my-adoption-requests",
+      "name": "List My Adoption Requests",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -80,
+      "_type": "request"
+    },
+    {
+      "_id": "req_adoption_show",
+      "parentId": "fld_adoptions",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/adoption-requests/{{ _.adoption_request_id }}",
+      "name": "Get Adoption Request",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -70,
+      "_type": "request"
+    },
+    {
+      "_id": "req_adoption_update",
+      "parentId": "fld_adoptions",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/adoption-requests/{{ _.adoption_request_id }}",
+      "name": "Update Adoption Status",
+      "description": "Admin token required. Allowed values: pending, approved, rejected.",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"approved\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -60,
+      "_type": "request"
+    },
+    {
+      "_id": "req_adoption_delete",
+      "parentId": "fld_adoptions",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/adoption-requests/{{ _.adoption_request_id }}",
+      "name": "Delete Adoption Request",
+      "description": "Owner can delete pending requests; admin can delete any request.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -50,
+      "_type": "request"
+    },
+    {
+      "_id": "req_admin_users_list",
+      "parentId": "fld_admin",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/admin/users",
+      "name": "List Users",
+      "description": "Admin token required.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -100,
+      "_type": "request"
+    },
+    {
+      "_id": "req_admin_users_show",
+      "parentId": "fld_admin",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/admin/users/{{ _.user_id }}",
+      "name": "Get User",
+      "description": "Admin token required.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -90,
+      "_type": "request"
+    },
+    {
+      "_id": "req_admin_users_update",
+      "parentId": "fld_admin",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/admin/users/{{ _.user_id }}",
+      "name": "Update User",
+      "description": "Admin token required.",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Updated User\",\n  \"is_admin\": false\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -80,
+      "_type": "request"
+    },
+    {
+      "_id": "req_admin_users_delete",
+      "parentId": "fld_admin",
+      "modified": 1793875200000,
+      "created": 1793875200000,
+      "url": "{{ _.base_url }}/admin/users/{{ _.user_id }}",
+      "name": "Delete User",
+      "description": "Admin token required. Do not use this with the currently logged-in admin user.",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -70,
+      "_type": "request"
+    }
+  ]
+}

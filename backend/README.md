@@ -1,58 +1,135 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Animal Shelter Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel alapú REST API állatmenhelyek kezeléséhez. Az API állatokat, felhasználókat, profilokat és örökbefogadási kérelmeket kezel.
 
-## About Laravel
+## Technológiák
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP
+- Laravel
+- Laravel Sanctum
+- SQLite vagy a .env fájlban beállított adatbázis
+- Composer
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Követelmények
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2 vagy újabb
+- Composer
+- SQLite vagy más, Laravel által támogatott adatbázis
 
-## Learning Laravel
+## Telepítés
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+A backend könyvtárban futtasd:
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    composer install
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Másold le a környezeti konfigurációt, ha még nem létezik:
 
-## Agentic Development
+    copy .env.example .env
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Generáld az alkalmazáskulcsot:
 
-```bash
-composer require laravel/boost --dev
+    php artisan key:generate
 
-php artisan boost:install
-```
+Állítsd be az adatbázis kapcsolódását a .env fájlban, majd futtasd a migrációkat:
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+    php artisan migrate
 
-## Contributing
+Tesztadatok létrehozása:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    php artisan db:seed
 
-## Code of Conduct
+Az összes adat újralétrehozása fejlesztői környezetben:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    php artisan migrate:fresh --seed
 
-## Security Vulnerabilities
+## Indítás
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    php artisan serve
 
-## License
+Az API alapértelmezett címe:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    http://localhost:8000/api
+
+## Hitelesítés
+
+Az API Laravel Sanctum bearer token alapú hitelesítést használ.
+
+1. Jelentkezz be a POST /api/login végponton.
+2. Másold ki a válaszban kapott tokent.
+3. Küldd el a védett végpontoknál az alábbi fejlécben:
+
+    Authorization: Bearer <token>
+
+Fejlesztői seed felhasználók:
+
+| Szerepkör | E-mail | Jelszó |
+|---|---|---|
+| Admin | admin@example.com | Password!123 |
+| Normál felhasználó | test@example.com | Password!123 |
+
+Ezek az adatok kizárólag helyi fejlesztéshez és teszteléshez használhatók.
+
+## API dokumentáció
+
+Az összes végpont, kérésparaméter, jogosultság, válaszformátum, validáció és Insomnia használati információ a következő fájlban található:
+
+[API_DOCUMENTATION.md](API_DOCUMENTATION.md)
+
+## Insomnia
+
+Az API teszteléséhez használható importfájl:
+
+[animal-shelter-insomnia.json](../animal-shelter-insomnia.json)
+
+Importálás után állítsd be legalább az alábbi környezeti változókat:
+
+| Változó | Példa |
+|---|---|
+| base_url | http://localhost:8000/api |
+| token | A login válaszából kapott token |
+| pet_id | 1 |
+| adoption_request_id | 1 |
+| user_id | 1 |
+
+## Jelszószabályok
+
+A felhasználói jelszónak:
+
+- legalább 8 karakterből kell állnia;
+- tartalmaznia kell kisbetűt;
+- tartalmaznia kell nagybetűt;
+- tartalmaznia kell speciális karaktert;
+- meg kell egyeznie a megerősítő jelszóval.
+
+## Tesztek futtatása
+
+    php artisan test
+
+## Fontos fejlesztői megjegyzések
+
+- A .env fájlt ne töltsd fel verziókezelőbe.
+- A .env fájlban lévő titkos értékeket ne oszd meg.
+- A migrate:fresh --seed parancs fejlesztői adatbázisban minden táblát töröl és újra létrehoz.
+- Az állatok, örökbefogadási kérelmek és admin felhasználók listázása azonosító szerint növekvő sorrendben történik.
+- A lista végpontok nem használnak Laravel pagination links és meta blokkokat.
+- Érvénytelen szűrőparaméterek esetén az API 422 Unprocessable Entity választ ad.
+
+## Projektstruktúra
+
+    app/
+        Http/Controllers/
+        Http/Requests/
+        Http/Resources/
+        Models/
+        Policies/
+        Services/
+    database/
+        factories/
+        migrations/
+        seeders/
+    routes/
+        api.php
+
+## Licenc
+
+Ez a projekt oktatási és vizsgaremek céljára készült.
