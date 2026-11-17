@@ -20,6 +20,7 @@ export interface Pet {
 }
 
 export interface PetFilters {
+  species?:string;
   gender?: Gender;
   adopted?: boolean;
 }

@@ -15,6 +15,10 @@ export class PetApi {
 
   getAll(filters: PetFilters = {}): Observable<Pet[]> {
     let params = new HttpParams();
+    
+    if (filters.species) {
+    params = params.set('species', filters.species);
+    }
     if (filters.gender) {
       params = params.set('gender', filters.gender);
     }
