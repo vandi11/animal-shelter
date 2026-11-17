@@ -2,6 +2,17 @@
 
 <div class="row g-2 mb-4">
   <div class="col-12 col-sm-6 col-md-4">
+    <select class="form-select" [ngModel]="species()"
+            (ngModelChange)="species.set($event); load()">
+      <option value="">Minden faj</option>
+      <option value="dog">Kutya</option>
+      <option value="cat">Macska</option>
+      <option value="rabbit">Nyúl</option>
+    </select>
+  </div>
+
+<div class="row g-2 mb-4">
+  <div class="col-12 col-sm-6 col-md-4">
     <select class="form-select" [ngModel]="gender()"
             (ngModelChange)="gender.set($event); load()">
       <option value="">Minden nem</option>
@@ -10,6 +21,7 @@
       <option value="unknown">Ismeretlen</option>
     </select>
   </div>
+  
   <div class="col-12 col-sm-6 col-md-4">
     <select class="form-select" [ngModel]="adopted()"
             (ngModelChange)="adopted.set($event); load()">
@@ -37,7 +49,7 @@
           <div class="card-body">
             <h2 class="h5 card-title">{{ pet.name }}</h2>
             <p class="card-text text-muted mb-1">
-              {{ pet.species }} · {{ genderLabels[pet.gender] }}
+              {{ speciesLabels[pet.species] ?? pet.species }} · {{ genderLabels[pet.gender] }}
             </p>
             @if (pet.color) {
               <p class="card-text text-muted small mb-0">Szín: {{ pet.color }}</p>

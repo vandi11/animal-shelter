@@ -17,6 +17,7 @@ export class AnimalList implements OnInit {
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
 
+  protected readonly species = signal<string>('');
   protected readonly gender = signal<'' | Gender>('');
   protected readonly adopted = signal<'' | 'true' | 'false'>('false');
 
@@ -24,6 +25,11 @@ export class AnimalList implements OnInit {
     male: 'Hím',
     female: 'Nőstény',
     unknown: 'Ismeretlen',
+  };
+  protected readonly speciesLabels: Record<string, string> = {
+  dog: 'Kutya',
+  cat: 'Macska',
+  rabbit: 'Nyúl',
   };
 
   ngOnInit(): void {
@@ -34,11 +40,13 @@ export class AnimalList implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
+    const species = this.species();
     const gender = this.gender();
     const adopted = this.adopted();
 
     this.api
       .getAll({
+        species: species || undefined,
         gender: gender || undefined,
         adopted: adopted === '' ? undefined : adopted === 'true',
       })
