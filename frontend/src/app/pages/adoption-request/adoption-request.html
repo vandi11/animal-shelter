@@ -1,1 +1,45 @@
-<p>adoption-request works!</p>
+<h1 class="h3 mb-4">Kérelmeim</h1>
+
+@if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+  </div>
+} @else {
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  <div class="list-group">
+    @for (request of requests(); track request.id) {
+      <div class="list-group-item d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <div>
+          @if (request.pet; as pet) {
+            <a [routerLink]="['/animals', pet.id]" class="fw-semibold text-decoration-none">
+              {{ pet.name }}
+            </a>
+            <span class="text-muted">· {{ speciesLabels[pet.species] ?? pet.species }}</span>
+          }
+          <div class="small text-muted">
+            Leadva: {{ request.created_at | date: 'yyyy.MM.dd HH:mm' }}
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge" [class]="statusBadges[request.status]">
+            {{ statusLabels[request.status] }}
+          </span>
+          @if (request.status === 'pending') {
+            <button type="button" class="btn btn-outline-danger btn-sm"
+                    (click)="withdraw(request)">
+              Visszavonás
+            </button>
+          }
+        </div>
+      </div>
+    } @empty {
+      <p class="text-muted">
+        Még nem adtál le kérelmet.
+        <a routerLink="/animals">Böngéssz az állatok között.</a>
+      </p>
+    }
+  </div>
+}

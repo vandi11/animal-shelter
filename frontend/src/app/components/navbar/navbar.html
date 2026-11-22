@@ -7,13 +7,27 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="mainNav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-md-center">
         <li class="nav-item">
           <a class="nav-link" routerLink="/animals" routerLinkActive="active">Állatok</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/login" routerLinkActive="active">Belépés</a>
-        </li>
+        @if (auth.isLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/my-requests" routerLinkActive="active">Kérelmeim</a>
+          </li>
+          <li class="nav-item">
+            <span class="navbar-text me-md-3">{{ auth.user()?.name }}</span>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="logout()">
+              Kilépés
+            </button>
+          </li>
+        } @else {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">Belépés</a>
+          </li>
+        }
       </ul>
     </div>
   </div>
