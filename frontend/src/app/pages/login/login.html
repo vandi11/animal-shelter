@@ -1,1 +1,58 @@
-<p>login works!</p>
+<div class="row justify-content-center">
+  <div class="col-12 col-sm-10 col-md-6 col-lg-5">
+    <h1 class="h3 mb-4">{{ registerMode() ? 'Regisztráció' : 'Belépés' }}</h1>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      @if (registerMode()) {
+        <div class="mb-3">
+          <label for="name" class="form-label">Név</label>
+          <input id="name" type="text" class="form-control"
+                 formControlName="name" maxlength="50" autocomplete="name">
+        </div>
+      }
+
+      <div class="mb-3">
+        <label for="email" class="form-label">E-mail</label>
+        <input id="email" type="email" class="form-control"
+               formControlName="email" autocomplete="email"
+               [class.is-invalid]="form.controls.email.touched && form.controls.email.invalid">
+        <div class="invalid-feedback">Adj meg érvényes e-mail címet.</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Jelszó</label>
+        <input id="password" type="password" class="form-control"
+               formControlName="password"
+               [autocomplete]="registerMode() ? 'new-password' : 'current-password'">
+        @if (registerMode()) {
+          <div class="form-text">
+            Legalább 8 karakter, kisbetű, nagybetű és speciális karakter.
+          </div>
+        }
+      </div>
+
+      @if (registerMode()) {
+        <div class="mb-3">
+          <label for="confirm" class="form-label">Jelszó megerősítése</label>
+          <input id="confirm" type="password" class="form-control"
+                 formControlName="password_confirmation" autocomplete="new-password">
+        </div>
+      }
+
+      @if (error()) {
+        <div class="alert alert-danger" role="alert">{{ error() }}</div>
+      }
+
+      <button type="submit" class="btn btn-primary w-100" [disabled]="submitting()">
+        @if (submitting()) {
+          <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+        }
+        {{ registerMode() ? 'Regisztrálok' : 'Belépek' }}
+      </button>
+    </form>
+
+    <button type="button" class="btn btn-link w-100 mt-3" (click)="toggleMode()">
+      {{ registerMode() ? 'Már van fiókom, belépek' : 'Még nincs fiókom, regisztrálok' }}
+    </button>
+  </div>
+</div>

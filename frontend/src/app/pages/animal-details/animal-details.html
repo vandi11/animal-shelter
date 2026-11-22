@@ -1,1 +1,85 @@
-<p>animal-details works!</p>
+<a routerLink="/animals" class="btn btn-link px-0 mb-3">← Vissza az állatokhoz</a>
+
+@if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+  </div>
+} @else if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+} @else if (pet(); as p) {
+  <div class="row g-4">
+    <div class="col-12 col-md-5">
+      @if (api.photoUrl(p); as photo) {
+        <img [src]="photo" class="img-fluid rounded" [alt]="p.name">
+      } @else {
+        <div class="bg-body-secondary rounded d-flex align-items-center justify-content-center text-muted"
+             style="height: 16rem;">
+          Nincs fotó
+        </div>
+      }
+    </div>
+
+    <div class="col-12 col-md-7">
+      <h1 class="h2">{{ p.name }}</h1>
+      <p class="text-muted">
+        {{ speciesLabels[p.species] ?? p.species }} · {{ genderLabels[p.gender] }}
+      </p>
+
+      @if (p.adopted) {
+        <span class="badge text-bg-secondary mb-3">Már örökbe fogadták</span>
+      }
+
+      @if (p.description) {
+        <p>{{ p.description }}</p>
+      }
+
+      <dl class="row mb-4">
+        @if (age(); as a) {
+          <dt class="col-5 col-sm-4">Kor</dt>
+          <dd class="col-7 col-sm-8">{{ a }}</dd>
+        }
+        @if (p.weight) {
+          <dt class="col-5 col-sm-4">Súly</dt>
+          <dd class="col-7 col-sm-8">{{ p.weight }} kg</dd>
+        }
+        @if (p.color) {
+          <dt class="col-5 col-sm-4">Szín</dt>
+          <dd class="col-7 col-sm-8">{{ p.color }}</dd>
+        }
+        @if (p.health_status) {
+          <dt class="col-5 col-sm-4">Egészség</dt>
+          <dd class="col-7 col-sm-8">{{ healthLabels[p.health_status] ?? p.health_status }}</dd>
+        }
+        <dt class="col-5 col-sm-4">Ivartalanított</dt>
+        <dd class="col-7 col-sm-8">{{ p.sterilized ? 'Igen' : 'Nem' }}</dd>
+        @if (p.arrival_date) {
+          <dt class="col-5 col-sm-4">Menhelyre érkezett</dt>
+          <dd class="col-7 col-sm-8">{{ p.arrival_date | date: 'yyyy.MM.dd' }}</dd>
+        }
+      </dl>
+
+      @if (!p.adopted) {
+        @if (requested()) {
+          <div class="alert alert-success" role="alert">
+            A kérelmed beérkezett. Az állapotát a
+            <a routerLink="/my-requests" class="alert-link">Kérelmeim</a> oldalon követheted.
+          </div>
+        } @else {
+          @if (requestError()) {
+            <div class="alert alert-danger" role="alert">{{ requestError() }}</div>
+          }
+          <button type="button" class="btn btn-primary btn-lg w-100"
+                  [disabled]="submitting()" (click)="adopt()">
+            @if (submitting()) {
+              <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+            }
+            Örökbe fogadom
+          </button>
+          @if (!auth.isLoggedIn()) {
+            <p class="form-text mt-2">A kérelem leadásához be kell jelentkezned.</p>
+          }
+        }
+      }
+    </div>
+  </div>
+}
