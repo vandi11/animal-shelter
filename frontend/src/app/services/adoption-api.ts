@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Adoption } from '../models/adoption';
+import { Adoption, AdoptionStatus } from '../models/adoption';
 
 interface DataWrapper<T> {
   data: T;
@@ -27,5 +27,17 @@ export class AdoptionApi {
 
   remove(id: number): Observable<unknown> {
     return this.http.delete(`${this.url}/adoption-requests/${id}`);
+  }
+
+  all(): Observable<Adoption[]> {
+    return this.http
+      .get<DataWrapper<Adoption[]>>(`${this.url}/adoption-requests`)
+      .pipe(map((response) => response.data));
+  }
+
+  updateStatus(id: number, status: AdoptionStatus): Observable<Adoption> {
+    return this.http
+      .patch<DataWrapper<Adoption>>(`${this.url}/adoption-requests/${id}`, { status })
+      .pipe(map((response) => response.data));
   }
 }

@@ -1,0 +1,38 @@
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">Állatok kezelése</h1>
+  <a class="btn btn-primary" routerLink="/admin/pets/new">+ Új állat</a>
+</div>
+
+@if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+  </div>
+} @else {
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  <div class="list-group">
+    @for (pet of pets(); track pet.id) {
+      <div class="list-group-item d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <div>
+          <span class="fw-semibold">{{ pet.name }}</span>
+          <span class="text-muted">
+            · {{ speciesLabels[pet.species] ?? pet.species }} · {{ genderLabels[pet.gender] }}
+          </span>
+          @if (pet.adopted) {
+            <span class="badge text-bg-secondary ms-2">Örökbe fogadták</span>
+          }
+        </div>
+        <div class="d-flex gap-2">
+          <a class="btn btn-outline-primary btn-sm"
+             [routerLink]="['/admin/pets', pet.id, 'edit']">Szerkesztés</a>
+          <button type="button" class="btn btn-outline-danger btn-sm"
+                  (click)="remove(pet)">Törlés</button>
+        </div>
+      </div>
+    } @empty {
+      <p class="text-muted p-3 mb-0">Még nincs állat felvéve.</p>
+    }
+  </div>
+}

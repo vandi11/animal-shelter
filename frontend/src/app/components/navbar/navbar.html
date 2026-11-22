@@ -15,6 +15,14 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/my-requests" routerLinkActive="active">Kérelmeim</a>
           </li>
+          @if (auth.isAdmin()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/pets" routerLinkActive="active">Állatok kezelése</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/requests" routerLinkActive="active">Beérkezett kérelmek</a>
+          </li>
+        }
           <li class="nav-item">
             <span class="navbar-text me-md-3">{{ auth.user()?.name }}</span>
           </li>

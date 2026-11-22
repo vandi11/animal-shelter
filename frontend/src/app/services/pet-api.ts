@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Pet, PetFilters } from '../models/pet';
+import { Pet, PetFilters, PetPayload } from '../models/pet';
 
 interface DataWrapper<T> {
   data: T;
@@ -34,6 +34,22 @@ export class PetApi {
     return this.http
       .get<DataWrapper<Pet>>(`${this.url}/${id}`)
       .pipe(map((response) => response.data));
+  }
+
+    create(payload: PetPayload): Observable<Pet> {
+    return this.http
+      .post<DataWrapper<Pet>>(this.url, payload)
+      .pipe(map((response) => response.data));
+  }
+
+  update(id: number, payload: PetPayload): Observable<Pet> {
+    return this.http
+      .put<DataWrapper<Pet>>(`${this.url}/${id}`, payload)
+      .pipe(map((response) => response.data));
+  }
+
+  remove(id: number): Observable<unknown> {
+    return this.http.delete(`${this.url}/${id}`);
   }
 
   photoUrl(pet: Pet): string | null {
