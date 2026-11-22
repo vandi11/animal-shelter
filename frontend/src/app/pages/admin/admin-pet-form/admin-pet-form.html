@@ -1,0 +1,104 @@
+<a routerLink="/admin/pets" class="btn btn-link px-0 mb-3">← Vissza a listához</a>
+<h1 class="h3 mb-4">{{ petId() ? 'Állat szerkesztése' : 'Új állat' }}</h1>
+
+@if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+  </div>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="row g-3">
+      <div class="col-12 col-md-6">
+        <label for="name" class="form-label">Név *</label>
+        <input id="name" type="text" class="form-control" formControlName="name"
+               maxlength="100"
+               [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid">
+        <div class="invalid-feedback">A név megadása kötelező.</div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <label for="species" class="form-label">Faj *</label>
+        <select id="species" class="form-select" formControlName="species">
+          <option value="dog">Kutya</option>
+          <option value="cat">Macska</option>
+          <option value="rabbit">Nyúl</option>
+        </select>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <label for="gender" class="form-label">Nem *</label>
+        <select id="gender" class="form-select" formControlName="gender">
+          <option value="male">Hím</option>
+          <option value="female">Nőstény</option>
+          <option value="unknown">Ismeretlen</option>
+        </select>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <label for="birth_date" class="form-label">Születési dátum</label>
+        <input id="birth_date" type="date" class="form-control" formControlName="birth_date">
+      </div>
+
+      <div class="col-6 col-md-3">
+        <label for="arrival_date" class="form-label">Érkezés dátuma</label>
+        <input id="arrival_date" type="date" class="form-control" formControlName="arrival_date">
+      </div>
+
+      <div class="col-6 col-md-3">
+        <label for="weight" class="form-label">Súly (kg)</label>
+        <input id="weight" type="number" step="0.01" class="form-control"
+               formControlName="weight"
+               [class.is-invalid]="form.controls.weight.touched && form.controls.weight.invalid">
+        <div class="invalid-feedback">0 és 999,99 közötti értéket adj meg.</div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <label for="color" class="form-label">Szín</label>
+        <input id="color" type="text" class="form-control" formControlName="color">
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label for="health_status" class="form-label">Egészségi állapot</label>
+        <select id="health_status" class="form-select" formControlName="health_status">
+          <option value="">Nincs megadva</option>
+          <option value="healthy">Egészséges</option>
+          <option value="under observation">Megfigyelés alatt</option>
+          <option value="needs treatment">Kezelésre szorul</option>
+        </select>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label for="photo_path" class="form-label">Fotó elérési útja</label>
+        <input id="photo_path" type="text" class="form-control" formControlName="photo_path">
+      </div>
+
+      <div class="col-12">
+        <div class="form-check">
+          <input id="sterilized" type="checkbox" class="form-check-input"
+                 formControlName="sterilized">
+          <label for="sterilized" class="form-check-label">Ivartalanított</label>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <label for="description" class="form-label">Leírás</label>
+        <textarea id="description" rows="4" class="form-control"
+                  formControlName="description"></textarea>
+      </div>
+    </div>
+
+    @if (error()) {
+      <div class="alert alert-danger mt-3" role="alert">{{ error() }}</div>
+    }
+
+    <div class="d-flex gap-2 mt-4">
+      <button type="submit" class="btn btn-primary" [disabled]="submitting()">
+        @if (submitting()) {
+          <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+        }
+        Mentés
+      </button>
+      <a routerLink="/admin/pets" class="btn btn-outline-secondary">Mégse</a>
+    </div>
+  </form>
+}

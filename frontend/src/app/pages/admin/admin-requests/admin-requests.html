@@ -1,0 +1,57 @@
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">Beérkezett kérelmek</h1>
+  <select class="form-select w-auto" [ngModel]="filter()"
+          (ngModelChange)="filter.set($event)">
+    <option value="pending">Függőben</option>
+    <option value="approved">Jóváhagyva</option>
+    <option value="rejected">Elutasítva</option>
+    <option value="">Mind</option>
+  </select>
+</div>
+
+@if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border" role="status"></div>
+  </div>
+} @else {
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  <div class="list-group">
+    @for (request of visible(); track request.id) {
+      <div class="list-group-item d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <div>
+          @if (request.pet; as pet) {
+            <a [routerLink]="['/animals', pet.id]" class="fw-semibold text-decoration-none">
+              {{ pet.name }}
+            </a>
+            <span class="text-muted">· {{ speciesLabels[pet.species] ?? pet.species }}</span>
+          }
+          @if (request.user; as user) {
+            <div class="small">{{ user.name }} ({{ user.email }})</div>
+          }
+          <div class="small text-muted">
+            Leadva: {{ request.created_at | date: 'yyyy.MM.dd HH:mm' }}
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <span class="badge" [class]="statusBadges[request.status]">
+            {{ statusLabels[request.status] }}
+          </span>
+          @if (request.status === 'pending') {
+            <button type="button" class="btn btn-success btn-sm"
+                    [disabled]="busyId() === request.id"
+                    (click)="setStatus(request, 'approved')">Jóváhagyás</button>
+            <button type="button" class="btn btn-outline-danger btn-sm"
+                    [disabled]="busyId() === request.id"
+                    (click)="setStatus(request, 'rejected')">Elutasítás</button>
+          }
+        </div>
+      </div>
+    } @empty {
+      <p class="text-muted p-3 mb-0">Nincs a szűrőnek megfelelő kérelem.</p>
+    }
+  </div>
+}

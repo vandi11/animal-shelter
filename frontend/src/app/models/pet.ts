@@ -24,3 +24,5 @@ export interface PetFilters {
   gender?: Gender;
   adopted?: boolean;
 }
+
+export type PetPayload = Partial<Omit<Pet, 'id' | 'created_at' | 'updated_at'>>;
